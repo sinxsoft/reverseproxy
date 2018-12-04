@@ -1,7 +1,7 @@
 package main
 
 import (
-	rr "github.com/sinxsoft/reverseproxy2/roundrobin"
+	rr "github.com/sinxsoft/reverseproxy/roundrobin"
 	"log"
 	"net/http"
 	"net/http/httputil"
