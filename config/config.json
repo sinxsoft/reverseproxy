@@ -18,5 +18,6 @@
     ],
   "proxyPass":["/supervisor/prattManage/commissionK msg:[ooooo]",
     "/supervisor/prattManage/commissionD http://127.0.0.1:9001"],
-  "filter":["/Users/henrik/Documents/script/abc.lua"]
+  "urlFilter":[{"urlPath":"/","executeDesc":"/Users/henrik/Documents/script/abc.lua"},
+    {"urlPath":"/abc","executeDesc":"/Users/henrik/Documents/script/abddddc.lua"}]
 }

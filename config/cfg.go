@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 )
 
+var ConfigInst Config
+
 type RoundRobin struct {
 	URLs string //127.0.0.1:9001, 127.0.0.1:9001 逗号分隔
 }
@@ -19,12 +21,18 @@ type Config struct {
 	RoundRobin RoundRobin
 	Rewrite    []Rewrite //[]string `json:"rewriteCondition"`
 	ProxyPass  []string  `json:"proxyPass"`
-	Filter     []string  `json:"filter"` //执行的脚本，lua,shell......
+	//Filter     []string  `json:"filter"` //执行的脚本，lua,shell......
+	UrlFilter []UrlFilter `json:"urlFilter"` //执行的脚本，lua,shell......
 }
 
 type Rewrite struct {
 	RewriteCond string `json:"rewriteCond"`
 	RewriteRule string `json:"rewriteRule"`
+}
+
+type UrlFilter struct {
+	UrlPath     string `json:"urlPath"`
+	ExecuteDesc string `json:"executeDesc"`
 }
 
 type JsonStruct struct {
