@@ -76,17 +76,14 @@ func nextWeightedNode(nodes []*WeightNginx) (best *WeightNginx) {
 
 	for i := 0; i < len(nodes); i++ {
 		w := nodes[i]
-
 		if w == nil {
 			continue
 		}
-
 		w.CurrentWeight += w.EffectiveWeight
 		total += w.EffectiveWeight
 		if w.EffectiveWeight < w.Weight {
 			w.EffectiveWeight++
 		}
-
 		if best == nil || w.CurrentWeight > best.CurrentWeight {
 			best = w
 		}
@@ -127,11 +124,9 @@ func (w *WLVS) Next() interface{} {
 	if w.n == 0 {
 		return nil
 	}
-
 	if w.n == 1 {
 		return w.nodes[0].Node
 	}
-
 	for {
 		w.i = (w.i + 1) % w.n
 		if w.i == 0 {

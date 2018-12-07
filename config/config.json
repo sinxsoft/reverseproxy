@@ -1,0 +1,22 @@
+{
+  "httpPort":"81",
+  "httpsPort":"443",
+  "certFile":"/Users/henrik/Documents/golang/src/golang-ReverseProxy/server/cacert.pem",
+  "keyFile":"/Users/henrik/Documents/golang/src/golang-ReverseProxy/server/privkey.pem",
+  "httpOpen":true,
+  "httpsOpen":true,
+  "roundRobin":{
+    "uRLs":"127.0.0.1:9001,127.0.0.1:9001"
+  },
+  "rewrite":[{
+    "rewriteCond":"${http_agent} contain abcedf",
+    "rewriteRule":" http://www.baidu.com"
+  },{
+    "rewriteCond":"${x-forward-for} = 123.33.33.33",
+    "rewriteRule":" http://www.baidu.com"
+  }
+    ],
+  "proxyPass":["/supervisor/prattManage/commissionK msg:[ooooo]",
+    "/supervisor/prattManage/commissionD http://127.0.0.1:9001"],
+  "filter":["/Users/henrik/Documents/script/abc.lua"]
+}
