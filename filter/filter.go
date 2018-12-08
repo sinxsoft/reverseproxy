@@ -14,7 +14,7 @@ type Filter struct {
 	executeFile []byte
 }
 
-func (this *Filter) execute(w http.ResponseWriter, r *http.Request) {
+func (this *Filter) Execute(w http.ResponseWriter, r *http.Request) {
 	if strings.HasSuffix(strings.ToLower(this.configDes), ".lua") {
 
 	} else if strings.HasSuffix(strings.ToLower(this.configDes), ".sh") {
