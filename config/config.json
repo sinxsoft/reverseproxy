@@ -9,15 +9,18 @@
     "uRLs":"127.0.0.1:9001,127.0.0.1:9001"
   },
   "rewrite":[{
-    "rewriteCond":"${http_agent} contain abcedf",
-    "rewriteRule":" http://www.baidu.com"
+    "rewriteCond":"${http_agent} 正则",
+    "rewriteRule":"/abc/ddd https://www.baidu.com /xxxxx"
   },{
-    "rewriteCond":"${x-forward-for} = 123.33.33.33",
-    "rewriteRule":" http://www.baidu.com"
+    "rewriteCond":"${X-Forwarded-For}  正则",
+    "rewriteRule":"/abc/dddddee https://www.baidu.com /abcdef"
+  },{
+    "rewriteCond":"${Cookie:something}  正则",
+    "rewriteRule":"/abc/dddddee https://www.baidu.com /abcdef"
   }
     ],
-  "proxyPass":["/supervisor/prattManage/commissionK msg:[ooooo]",
-    "/supervisor/prattManage/commissionD http://127.0.0.1:9001"],
-  "urlFilter":[{"urlPath":"/","executeDesc":"/Users/henrik/Documents/script/abc.lua"},
+  "proxyPass":["/supervisor/prattManage/commission||127.0.0.1:9999||/",
+    "/eureka/css/wro.css||127.0.0.1:9999||/eureka/css/wro.css"],
+  "urlFilter":[{"urlPath":"/xxx","executeDesc":"/Users/henrik/Documents/script/abc.lua"},
     {"urlPath":"/abc","executeDesc":"/Users/henrik/Documents/script/abddddc.lua"}]
 }

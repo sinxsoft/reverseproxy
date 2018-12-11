@@ -47,10 +47,6 @@ func main() {
 	cfg := config.GetConfig()
 	fmt.Print("配置情况如下：", cfg)
 	config.ConfigInst = cfg
-	//FilterList = config.Filter
-	//RoundRobin = config.RoundRobin
-	//ProxyPass = config.ProxyPass
-	//Rewrite = config.Rewrite
 
 	filter.GetFilterList()
 	startServer(cfg)
@@ -59,7 +55,6 @@ func main() {
 	} else {
 		fmt.Print("没有配置任何监听端口，应用退出！")
 	}
-
 }
 
-var waitChannel chan (bool)
+var waitChannel chan bool

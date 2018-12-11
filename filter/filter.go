@@ -16,9 +16,11 @@ type Filter struct {
 
 func (this *Filter) Execute(w http.ResponseWriter, r *http.Request) {
 	if strings.HasSuffix(strings.ToLower(this.configDes), ".lua") {
-
+		w.Write([]byte("过滤了：.lua"))
+		w.Header().Add("lua", "asdasdfadsf")
 	} else if strings.HasSuffix(strings.ToLower(this.configDes), ".sh") {
-
+		w.Write([]byte("过滤了：.sh"))
+		w.Header().Add("sh", "asdasdfadsf")
 	}
 }
 

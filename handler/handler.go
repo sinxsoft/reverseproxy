@@ -19,27 +19,25 @@ var Rewrite []config.Rewrite
 var once sync.Once
 
 func initConfig() {
-
 	once.Do(func() {
 		filterList = filter.GetFilterList()
 		ProxyPass = config.ConfigInst.ProxyPass
 		Rewrite = config.ConfigInst.Rewrite
 	})
-
 }
 
 type HttpHandler struct {
 	Addrs []string
 }
 
-func (this *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (this *HttpHandler) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 	initConfig()
 	//filter，proxypass，rewrite 三个处理逐步开展
 
 	isFilter := false
 	for _, val := range filterList {
-		if val.IsFilter(r.RequestURI) {
-			val.Execute(w, r)
+		if val.IsFilter(request.RequestURI) {
+			val.Execute(w, request)
 			isFilter = true
 			return
 		}
@@ -50,36 +48,28 @@ func (this *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	addr := RR.Next().(string)
 
-	//for _, val := range ProxyPass {
-	//	// example: /abc/def    和   /abc/edf  goURL 相比，是相同的
-	//	if strings.HasSuffix(val, r.RequestURI+" ") {
-	//		serveThisUrl(addr,w,r)
-	//		break
-	//	}
-	//}
-	if result, remote := proxypass.DoProxyPass(ProxyPass, r); result {
-		serveThisUrl(addr+remote, w, r)
+	if result, remote, path := proxypass.DoProxyPass(ProxyPass, request); result {
+		serveThisUrl(remote, path, w, request)
 		return
 	}
 
-	if rewrite.DoRewrite(Rewrite, r) {
+	if result, remote, path := rewrite.DoRewrite(Rewrite, request); result {
+		serveThisUrl(remote, path, w, request)
 		return
 	}
-
-	//remote, err := url.Parse("http://" + addr)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//proxy := httputil.NewSingleHostReverseProxy(remote)
-	//proxy.ServeHTTP(w, r)
+	serveThisUrl(addr, "", w, request)
 }
 
-func serveThisUrl(addr string, w http.ResponseWriter, r *http.Request) {
+func serveThisUrl(addr, path string, w http.ResponseWriter, request *http.Request) {
 	//addr := RR.Next().(string)
 	remote, err := url.Parse("http://" + addr)
 	if err != nil {
 		panic(err)
 	}
 	proxy := httputil.NewSingleHostReverseProxy(remote)
-	proxy.ServeHTTP(w, r)
+	//改变request的path为向目标服务器发送
+	if path != "" {
+		request.URL.Path = path
+	}
+	proxy.ServeHTTP(w, request)
 }
