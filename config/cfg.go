@@ -19,10 +19,9 @@ type Config struct {
 	HttpOpen   bool
 	HttpsOpen  bool
 	RoundRobin RoundRobin
-	Rewrite    []Rewrite //[]string `json:"rewriteCondition"`
-	ProxyPass  []string  `json:"proxyPass"`
-	//Filter     []string  `json:"filter"` //执行的脚本，lua,shell......
-	UrlFilter []UrlFilter `json:"urlFilter"` //执行的脚本，lua,shell......
+	Rewrite    []Rewrite   //[]string `json:"rewriteCondition"`
+	ProxyPass  []string    `json:"proxyPass"`
+	UrlFilter  []UrlFilter `json:"urlFilter"` //执行的脚本，lua,shell......
 }
 
 type Rewrite struct {

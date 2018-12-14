@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/sinxsoft/reverseproxy/config"
 	"github.com/sinxsoft/reverseproxy/filter"
 	"github.com/sinxsoft/reverseproxy/proxypass"
@@ -9,7 +10,9 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 	"sync"
+	"time"
 )
 
 var RR = rr.NewWeightedRR(rr.RR_NGINX)
@@ -62,14 +65,29 @@ func (this *HttpHandler) ServeHTTP(w http.ResponseWriter, request *http.Request)
 
 func serveThisUrl(addr, path string, w http.ResponseWriter, request *http.Request) {
 	//addr := RR.Next().(string)
-	remote, err := url.Parse("http://" + addr)
-	if err != nil {
-		panic(err)
+	remote := &url.URL{}
+	if strings.HasPrefix(strings.ToLower(addr), "http://") || strings.HasPrefix(strings.ToLower(addr), "https://") {
+		rm, err := url.Parse(addr)
+		if err != nil {
+			panic(err)
+		} else {
+			remote = rm
+		}
+	} else {
+		rm, err := url.Parse("http://" + addr)
+		if err != nil {
+			panic(err)
+		} else {
+			remote = rm
+		}
 	}
+
 	proxy := httputil.NewSingleHostReverseProxy(remote)
 	//改变request的path为向目标服务器发送
 	if path != "" {
 		request.URL.Path = path
 	}
+	fmt.Println("Start proxy====", remote.String()+request.URL.Path, ";at", time.Now().Format("2006-01-02 15:04:05"))
 	proxy.ServeHTTP(w, request)
+	fmt.Println("end proxy:", remote.String()+request.URL.Path, ";at", time.Now().Format("2006-01-02 15:04:05"))
 }

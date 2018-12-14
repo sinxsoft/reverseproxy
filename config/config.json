@@ -9,14 +9,14 @@
     "uRLs":"127.0.0.1:9001,127.0.0.1:9001"
   },
   "rewrite":[{
-    "rewriteCond":"${http_agent} 正则",
-    "rewriteRule":"/abc/ddd https://www.baidu.com /xxxxx"
+    "rewriteCond":"${http-agent} .",
+    "rewriteRule":"/abc/ddd http://www.xgqq.com /"
   },{
     "rewriteCond":"${X-Forwarded-For}  正则",
-    "rewriteRule":"/abc/dddddee https://www.baidu.com /abcdef"
+    "rewriteRule":"/abc/dddddee3 http://www.xgqq.com /"
   },{
-    "rewriteCond":"${Cookie:something}  正则",
-    "rewriteRule":"/abc/dddddee https://www.baidu.com /abcdef"
+    "rewriteCond":"${Cookie:something} .",
+    "rewriteRule":"/abc/dddddee http://127.0.0.1:9999 /"
   }
     ],
   "proxyPass":["/supervisor/prattManage/commission||127.0.0.1:9999||/",
